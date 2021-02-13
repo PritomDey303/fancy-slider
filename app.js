@@ -27,7 +27,13 @@ const KEY = '15674931-a9d714b6e9d654524df198e00&q';
 
 // show images 
 const showImages = (images) => {
-  //console.log(images);
+   if(images.length===0){
+     let message="Sorry! No Images Found.";
+     alertBox(message,"search-alert");
+     spinner();
+     return;
+   } 
+    //console.log(images);
   imagesArea.style.display = 'block';
   gallery.innerHTML = '';
   // show gallery title
@@ -38,7 +44,7 @@ const showImages = (images) => {
     div.innerHTML = ` <img class="img-fluid img-thumbnail" onclick=selectItem(event,"${image.webformatURL}") src="${image.webformatURL}" alt="${image.tags}">`;
     gallery.appendChild(div)
   })
-
+   spinner();
 }
 
 const getImages = (query) => {
@@ -63,11 +69,14 @@ const selectItem = (event, img) => {
 }
 var timer
 const createSlider = () => {
+  
   // check slider image length
   if (sliders.length < 2) {
-    alert('Select at least 2 image.')
+    let message="Select at least 2 images.";
+    alertBox(message,"select-alert");
     return;
   }
+  spinner();
   // crate slider previous next area
   sliderContainer.innerHTML = '';
   const prevNext = document.createElement('div');
@@ -95,6 +104,8 @@ const createSlider = () => {
     slideIndex++;
     changeSlide(slideIndex);
   }, duration);
+
+  spinner();
 }
 
 // change slider index 
@@ -122,11 +133,28 @@ const changeSlide = (index) => {
 
   items[index].style.display = "block"
 }
+//spinner function
+const spinner = () => {
+  const spinner=document.getElementById("spinner");
+  spinner.classList.toggle("d-none");
+}
 
+//alert function
+const alertBox = (msg,id) => {
+  console.log(id);
+  let alert=document.getElementById(id);
+  alert.innerHTML=`<span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> ${msg}`;
+  alert.style.display='block';
+  setTimeout(() => {
+    alert.style.display="none";
+  }, 3000);
+}
 searchBtn.addEventListener('click', function () {
+  spinner();
   document.querySelector('.main').style.display = 'none';
   clearInterval(timer);
   const search = document.getElementById('search');
+  
   getImages(search.value)
   sliders.length = 0;
 })
