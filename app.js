@@ -30,6 +30,7 @@ const showImages = (images) => {
    if(images.length===0){
      let message="Sorry! No Images Found.";
      alertBox(message,"search-alert");
+     imagesArea.style.display = 'none';
      spinner();
      return;
    } 
@@ -147,7 +148,7 @@ const alertBox = (msg,id) => {
   alert.style.display='block';
   setTimeout(() => {
     alert.style.display="none";
-  }, 3000);
+  }, 4000);
 }
 searchBtn.addEventListener('click', function () {
   spinner();
