@@ -77,7 +77,7 @@ const createSlider = () => {
     alertBox(message,"select-alert");
     return;
   }
-  spinner();
+  
   // crate slider previous next area
   sliderContainer.innerHTML = '';
   const prevNext = document.createElement('div');
@@ -91,7 +91,12 @@ const createSlider = () => {
   document.querySelector('.main').style.display = 'block';
   // hide image aria
   imagesArea.style.display = 'none';
-  const duration = Math.abs(document.getElementById('duration').value || 1000);
+  let duration = document.getElementById('duration').value || 1000;
+  if(duration<0){
+    alert("You have entered a negative value.So default value(1000ms) is automatically applied.");
+    duration=1000;
+  }
+  spinner();
   sliders.forEach(slide => {
     let item = document.createElement('div');
     item.className = "slider-item";
@@ -142,7 +147,7 @@ const spinner = () => {
 
 //alert function
 const alertBox = (msg,id) => {
-  console.log(id);
+  //console.log(id);
   let alert=document.getElementById(id);
   alert.innerHTML=`<span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> ${msg}`;
   alert.style.display='block';
@@ -155,7 +160,15 @@ searchBtn.addEventListener('click', function () {
   document.querySelector('.main').style.display = 'none';
   clearInterval(timer);
   const search = document.getElementById('search');
-  
+  let searchVal=search.value.trim();
+  if(searchVal===""){
+    //console.log(searchVal);
+    document.querySelector('.images').style.display="none";
+    let message="You have not entered anything.Please type something.";
+    alertBox(message,"search-alert");
+    spinner();
+    return;
+  }
   getImages(search.value)
   sliders.length = 0;
 })
